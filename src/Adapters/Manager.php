@@ -28,6 +28,8 @@ use League\Flysystem\Adapter as FlyAdapters;
 use League\Flysystem\AwsS3v3\AwsS3Adapter;
 use Overtrue\Flysystem\Qiniu\QiniuAdapter;
 use Qiniu\Http\Client as QiniuClient;
+use Radiergummi\FlysystemGitHub\Client as GithubClient;
+use Radiergummi\FlysystemGitHub\GitHubAdapter;
 
 class Manager
 {
@@ -61,9 +63,10 @@ class Manager
     {
         $adapters = Collection::make([
             'aws-s3' => class_exists(S3Client::class),
-            'imgur'  => true,
-            'qiniu'  => class_exists(QiniuClient::class),
-            'local'  => true,
+            'imgur' => true,
+            'qiniu' => class_exists(QiniuClient::class),
+            'local' => true,
+            'github' => class_exists(GithubClient::class),
         ]);
 
         $this->events->dispatch(new Collecting($adapters));
@@ -110,13 +113,13 @@ class Manager
             new AwsS3Adapter(
                 new S3Client([
                     'credentials' => [
-                        'key'    => $this->settings->get('fof-upload.awsS3Key'),
+                        'key' => $this->settings->get('fof-upload.awsS3Key'),
                         'secret' => $this->settings->get('fof-upload.awsS3Secret'),
                     ],
-                    'region'                  => empty($this->settings->get('fof-upload.awsS3Region')) ? null : $this->settings->get('fof-upload.awsS3Region'),
-                    'version'                 => 'latest',
-                    'endpoint'                => empty($this->settings->get('fof-upload.awsS3Endpoint')) ? null : $this->settings->get('fof-upload.awsS3Endpoint'),
-                    'use_path_style_endpoint' => empty($this->settings->get('fof-upload.awsS3UsePathStyleEndpoint')) ? null : (bool) $this->settings->get('fof-upload.awsS3UsePathStyleEndpoint'),
+                    'region' => empty($this->settings->get('fof-upload.awsS3Region')) ? null : $this->settings->get('fof-upload.awsS3Region'),
+                    'version' => 'latest',
+                    'endpoint' => empty($this->settings->get('fof-upload.awsS3Endpoint')) ? null : $this->settings->get('fof-upload.awsS3Endpoint'),
+                    'use_path_style_endpoint' => empty($this->settings->get('fof-upload.awsS3UsePathStyleEndpoint')) ? null : (bool)$this->settings->get('fof-upload.awsS3UsePathStyleEndpoint'),
                 ]),
                 $this->settings->get('fof-upload.awsS3Bucket')
             )
@@ -137,8 +140,8 @@ class Manager
         return new Adapters\Imgur(
             new Guzzle([
                 'base_uri' => 'https://api.imgur.com/3/',
-                'headers'  => [
-                    'Authorization' => 'Client-ID '.$this->settings->get('fof-upload.imgurClientId'),
+                'headers' => [
+                    'Authorization' => 'Client-ID ' . $this->settings->get('fof-upload.imgurClientId'),
                 ],
             ])
         );
@@ -152,7 +155,7 @@ class Manager
     protected function local(Util $util)
     {
         return new Adapters\Local(
-            new FlyAdapters\Local($this->paths->public.'/assets/files')
+            new FlyAdapters\Local($this->paths->public . '/assets/files')
         );
     }
 
@@ -175,5 +178,22 @@ class Manager
         );
 
         return new Adapters\Qiniu($client);
+    }
+
+    /**
+     * @param Util $util
+     *
+     * @return Adapters\Github
+     */
+    protected function github(Util $util)
+    {
+        $token = $this->settings->get('fof-upload.githubSecret');
+        $branch = $this->settings->get('fof-upload.githubBranch', 'main');
+        $repository = $this->settings->get('fof-upload.githubBucket');
+        if (!$token || !$branch || !$repository) {
+            return null;
+        }
+
+        return new Adapters\Github(new GitHubAdapter(new GithubClient($token, $repository, $branch)));
     }
 }

@@ -1,0 +1,9 @@
+fof-upload:
+  admin:
+    labels:
+      github:
+        title: Github 存储设置
+        secret: 密匙
+        branch: '分支 (默认: main, 以前的项目是 master)'
+        bucket: '仓库 (比如: 892768447/fof-upload)'
+        cdn: '加速 (比如: https://cdn.jsdelivr.net/gh/892768447/fof-upload@main)'

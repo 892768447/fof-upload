@@ -56,6 +56,12 @@ fof-upload:
         key: Key
         secret: Secret
         bucket: Bucket
+      github:
+        title: Github storage settings
+        secret: Secret
+        branch: 'Branch (default: main, older is master)'
+        bucket: 'Bucket (like: 892768447/fof-upload)'
+        cdn: 'cdn (like: https://cdn.jsdelivr.net/gh/892768447/fof-upload@main)'
       preferences:
         max_file_size: Maximum file size (in kilobytes)
         mime_types: 'Configure your mime type, upload adapter mapping'
@@ -102,6 +108,7 @@ fof-upload:
       local: Local
       ovh-svfs: OVH SVFS
       qiniu: QiNiu
+      github: Github
   forum:
     media_manager: Media manager
 

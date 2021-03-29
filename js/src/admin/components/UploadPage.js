@@ -42,10 +42,15 @@ export default class UploadPage extends ExtensionPage {
             'qiniuKey',
             'qiniuSecret',
             'qiniuBucket',
+            // Github
+            'githubSecret',
+            'githubBranch',
+            'githubBucket',
+            'githubCdn',
         ];
 
         // the checkboxes we need to watch and to save.
-        this.checkboxes = ['mustResize', 'addsWatermarks', 'disableHotlinkProtection', 'disableDownloadLogging', 'awsS3UsePathStyleEndpoint'];
+        this.checkboxes = ['mustResize', 'addsWatermarks', 'disableHotlinkProtection', 'disableDownloadLogging', 'awsS3UsePathStyleEndpoint', 'githubKeep'];
 
         // fields that are objects
         this.objects = ['mimeTypes'];
@@ -93,12 +98,12 @@ export default class UploadPage extends ExtensionPage {
         // Since 'local' (or others) can now be disabled, pick the last entry in the object for default
         this.defaultAdap = Object.keys(this.uploadMethodOptions)[Object.keys(this.uploadMethodOptions).length - 1];
         this.values.mimeTypes() ||
-            (this.values.mimeTypes = Stream({
-                '^image\\/.*': {
-                    adapter: this.defaultAdap,
-                    template: 'image-preview',
-                },
-            }));
+        (this.values.mimeTypes = Stream({
+            '^image\\/.*': {
+                adapter: this.defaultAdap,
+                template: 'image-preview',
+            },
+        }));
 
         this.newMimeType = {
             regex: Stream(''),
@@ -409,6 +414,37 @@ export default class UploadPage extends ExtensionPage {
             );
         }
 
+        if (this.uploadMethodOptions['github'] !== undefined) {
+            items.add(
+                'github',
+                m('.github', [
+                    m('fieldset', [
+                        m('legend', app.translator.trans('fof-upload.admin.labels.github.title')),
+                        m('label', {}, app.translator.trans('fof-upload.admin.labels.github.secret')),
+                        m('input.FormControl', {
+                            value: this.values.githubSecret() || '',
+                            oninput: withAttr('value', this.values.githubSecret),
+                        }),
+                        m('label', {}, app.translator.trans('fof-upload.admin.labels.github.branch')),
+                        m('input.FormControl', {
+                            value: this.values.githubBranch() || '',
+                            oninput: withAttr('value', this.values.githubBranch),
+                        }),
+                        m('label', {}, app.translator.trans('fof-upload.admin.labels.github.bucket')),
+                        m('input.FormControl', {
+                            value: this.values.githubBucket() || '',
+                            oninput: withAttr('value', this.values.githubBucket),
+                        }),
+                        m('label', app.translator.trans('fof-upload.admin.labels.github.cdn')),
+                        m('input.FormControl', {
+                            value: this.values.githubCdn() || '',
+                            oninput: withAttr('value', this.values.githubCdn),
+                        }),
+                    ]),
+                ])
+            );
+        }
+
         return items;
     }
 
@@ -514,9 +550,10 @@ export default class UploadPage extends ExtensionPage {
         saveSettings(settings)
             .then(() => {
                 // on success, show popup
-                this.successAlert = app.alerts.show(Alert, { type: 'success' }, app.translator.trans('core.admin.basics.saved_message'));
+                this.successAlert = app.alerts.show(Alert, {type: 'success'}, app.translator.trans('core.admin.basics.saved_message'));
             })
-            .catch(() => {})
+            .catch(() => {
+            })
             .then(() => {
                 // return to the initial state and redraw the page
                 this.loading = false;
