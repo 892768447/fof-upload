@@ -7,3 +7,13 @@ fof-upload:
         branch: '分支 (默认: main, 以前的项目是 master)'
         bucket: '仓库 (比如: 892768447/fof-upload)'
         cdn: '加速 (比如: https://cdn.jsdelivr.net/gh/892768447/fof-upload@main)'
+      qcloud:
+        title: 腾讯COS 储存设置
+        region: 区域
+        appId: 应用ID
+        secretId: SecretId
+        secretKey: SecretKey
+        bucket: 存储桶
+        token: 鉴权（没有则不填）
+        timeout: 超时时间
+        cdn: '自定义CDN (默认: https://{存储桶地址}.cos.{区域地址}.myqcloud.com)'

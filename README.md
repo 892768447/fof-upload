@@ -2,7 +2,7 @@
 
 ## Todo
 - [x] github storage
-- [ ] tencent storage
+- [x] tencent storage
 - [ ] aliyun storage
 - [ ] upyun storage
 
@@ -15,6 +15,9 @@ composer require fof/upload
 
 # github
 composer require radiergummi/flysystem-github-storage -W
+
+# qcloud
+composer require freyo/flysystem-qcloud-cos-v5 -W
 ```
 
 ```
@@ -22,7 +25,9 @@ wget https://github.com/892768447/fof-upload/raw/main/beta-15.zip
 ```
 
 ```
-unzip -o beta-15.zip -d /your-website-path/vendor/fof/upload
+cd your website path
+
+unzip -o beta-15.zip -d vendor/fof/upload
 
 php flarum cache:clear
 ```

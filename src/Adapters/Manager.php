@@ -30,6 +30,8 @@ use Overtrue\Flysystem\Qiniu\QiniuAdapter;
 use Qiniu\Http\Client as QiniuClient;
 use Radiergummi\FlysystemGitHub\Client as GithubClient;
 use Radiergummi\FlysystemGitHub\GitHubAdapter;
+use Qcloud\Cos\Client as QcloudClient;
+use Freyo\Flysystem\QcloudCOSv5\Adapter as QcloudAdapter;
 
 class Manager
 {
@@ -67,6 +69,7 @@ class Manager
             'qiniu' => class_exists(QiniuClient::class),
             'local' => true,
             'github' => class_exists(GithubClient::class),
+            'qcloud' => class_exists(QcloudClient::class),
         ]);
 
         $this->events->dispatch(new Collecting($adapters));
@@ -195,5 +198,45 @@ class Manager
         }
 
         return new Adapters\Github(new GitHubAdapter(new GithubClient($token, $repository, $branch)));
+    }
+
+
+    /**
+     * @param Util $util
+     *
+     * @return Adapters\Qcloud
+     */
+    protected function qcloud(Util $util)
+    {
+        $region = $this->settings->get('fof-upload.qcloudRegion');
+        $appId = $this->settings->get('fof-upload.qcloudAppId');
+        $secretId = $this->settings->get('fof-upload.qcloudSecretId');
+        $secretKey = $this->settings->get('fof-upload.qcloudSecretKey');
+        $bucket = $this->settings->get('fof-upload.qcloudBucket');
+        $token = $this->settings->get('fof-upload.qcloudToken', '');
+        $timeout = (int)$this->settings->get('fof-upload.qcloudTimeout', '60');
+        if (!$region || !$appId || !$secretId || !$secretKey || !$bucket) {
+            return null;
+        }
+
+        $config = [
+            'region' => $region,
+            'credentials' => [
+                'appId' => $appId,
+                'secretId' => $secretId,
+                'secretKey' => $secretKey,
+                'token' => $token,
+            ],
+            'timeout' => $timeout,
+            'connect_timeout' => $timeout,
+            'bucket' => $bucket,
+            'cdn' => '',
+            'scheme' => 'https',
+            'read_from_cdn' => false,
+            'cdn_key' => '',
+            'encrypt' => false,
+        ];
+
+        return new Adapters\Qcloud(new QcloudAdapter(new QcloudClient($config), $config));
     }
 }

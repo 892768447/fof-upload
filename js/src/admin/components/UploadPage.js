@@ -47,10 +47,19 @@ export default class UploadPage extends ExtensionPage {
             'githubBranch',
             'githubBucket',
             'githubCdn',
+            // Qcloud
+            'qcloudRegion',
+            'qcloudAppId',
+            'qcloudSecretId',
+            'qcloudSecretKey',
+            'qcloudBucket',
+            'qcloudToken',
+            'qcloudTimeout',
+            'qcloudCdn',
         ];
 
         // the checkboxes we need to watch and to save.
-        this.checkboxes = ['mustResize', 'addsWatermarks', 'disableHotlinkProtection', 'disableDownloadLogging', 'awsS3UsePathStyleEndpoint', 'githubKeep'];
+        this.checkboxes = ['mustResize', 'addsWatermarks', 'disableHotlinkProtection', 'disableDownloadLogging', 'awsS3UsePathStyleEndpoint'];
 
         // fields that are objects
         this.objects = ['mimeTypes'];
@@ -439,6 +448,57 @@ export default class UploadPage extends ExtensionPage {
                         m('input.FormControl', {
                             value: this.values.githubCdn() || '',
                             oninput: withAttr('value', this.values.githubCdn),
+                        }),
+                    ]),
+                ])
+            );
+        }
+
+        if (this.uploadMethodOptions['qcloud'] !== undefined) {
+            items.add(
+                'qcloud',
+                m('.qcloud', [
+                    m('fieldset', [
+                        m('legend', app.translator.trans('fof-upload.admin.labels.qcloud.title')),
+                        m('label', {}, app.translator.trans('fof-upload.admin.labels.qcloud.region')),
+                        m('input.FormControl', {
+                            value: this.values.qcloudRegion() || '',
+                            oninput: withAttr('value', this.values.qcloudRegion),
+                        }),
+                        m('label', {}, app.translator.trans('fof-upload.admin.labels.qcloud.appId')),
+                        m('input.FormControl', {
+                            value: this.values.qcloudAppId() || '',
+                            oninput: withAttr('value', this.values.qcloudAppId),
+                        }),
+                        m('label', {}, app.translator.trans('fof-upload.admin.labels.qcloud.secretId')),
+                        m('input.FormControl', {
+                            value: this.values.qcloudSecretId() || '',
+                            oninput: withAttr('value', this.values.qcloudSecretId),
+                        }),
+                        m('label', app.translator.trans('fof-upload.admin.labels.qcloud.secretKey')),
+                        m('input.FormControl', {
+                            value: this.values.qcloudSecretKey() || '',
+                            oninput: withAttr('value', this.values.qcloudSecretKey),
+                        }),
+                        m('label', app.translator.trans('fof-upload.admin.labels.qcloud.bucket')),
+                        m('input.FormControl', {
+                            value: this.values.qcloudBucket() || '',
+                            oninput: withAttr('value', this.values.qcloudBucket),
+                        }),
+                        m('label', app.translator.trans('fof-upload.admin.labels.qcloud.token')),
+                        m('input.FormControl', {
+                            value: this.values.qcloudToken() || '',
+                            oninput: withAttr('value', this.values.qcloudToken),
+                        }),
+                        m('label', app.translator.trans('fof-upload.admin.labels.qcloud.timeout')),
+                        m('input.FormControl', {
+                            value: this.values.qcloudTimeout() || '60',
+                            oninput: withAttr('value', this.values.qcloudTimeout),
+                        }),
+                        m('label', app.translator.trans('fof-upload.admin.labels.qcloud.cdn')),
+                        m('input.FormControl', {
+                            value: this.values.qcloudCdn() || '',
+                            oninput: withAttr('value', this.values.qcloudCdn),
                         }),
                     ]),
                 ])

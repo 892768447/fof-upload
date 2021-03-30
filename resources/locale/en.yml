@@ -57,11 +57,21 @@ fof-upload:
         secret: Secret
         bucket: Bucket
       github:
-        title: Github storage settings
+        title: Github cos storage settings
         secret: Secret
         branch: 'Branch (default: main, older is master)'
         bucket: 'Bucket (like: 892768447/fof-upload)'
         cdn: 'cdn (like: https://cdn.jsdelivr.net/gh/892768447/fof-upload@main)'
+      qcloud:
+        title: Tencent storage settings
+        region: Region
+        appId: AppId
+        secretId: SecretId
+        secretKey: SecretKey
+        bucket: Bucket
+        token: Token
+        timeout: Timeout
+        cdn: 'cdn url (default: https://{bucket}.cos.{region}.myqcloud.com)'
       preferences:
         max_file_size: Maximum file size (in kilobytes)
         mime_types: 'Configure your mime type, upload adapter mapping'
@@ -109,6 +119,7 @@ fof-upload:
       ovh-svfs: OVH SVFS
       qiniu: QiNiu
       github: Github
+      qcloud: Qcloud
   forum:
     media_manager: Media manager
 
