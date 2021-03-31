@@ -33,7 +33,8 @@
         "softcreatr/php-mime-detector": "^3.0",
         "guzzlehttp/guzzle": "^6.0 || ^7.0",
         "ext-json": "*",
-        "freyo/flysystem-qcloud-cos-v5": "^2.2"
+        "freyo/flysystem-qcloud-cos-v5": "^2.2",
+        "apollopy/flysystem-aliyun-oss": "^1.2"
     },
     "replace": {
         "flagrow/upload": "*"

@@ -56,6 +56,13 @@ export default class UploadPage extends ExtensionPage {
             'qcloudToken',
             'qcloudTimeout',
             'qcloudCdn',
+            // Aliyun
+            'aliyunAccessId',
+            'aliyunAccessKey',
+            'aliyunEndPoint',
+            'aliyunBucket',
+            'aliyunPrefix',
+            'aliyunCdn',
         ];
 
         // the checkboxes we need to watch and to save.
@@ -499,6 +506,47 @@ export default class UploadPage extends ExtensionPage {
                         m('input.FormControl', {
                             value: this.values.qcloudCdn() || '',
                             oninput: withAttr('value', this.values.qcloudCdn),
+                        }),
+                    ]),
+                ])
+            );
+        }
+
+        if (this.uploadMethodOptions['aliyun'] !== undefined) {
+            items.add(
+                'aliyun',
+                m('.aliyun', [
+                    m('fieldset', [
+                        m('legend', app.translator.trans('fof-upload.admin.labels.aliyun.title')),
+                        m('label', {}, app.translator.trans('fof-upload.admin.labels.aliyun.accessId')),
+                        m('input.FormControl', {
+                            value: this.values.aliyunAccessId() || '',
+                            oninput: withAttr('value', this.values.aliyunAccessId),
+                        }),
+                        m('label', {}, app.translator.trans('fof-upload.admin.labels.aliyun.accessKey')),
+                        m('input.FormControl', {
+                            value: this.values.aliyunAccessKey() || '',
+                            oninput: withAttr('value', this.values.aliyunAccessKey),
+                        }),
+                        m('label', {}, app.translator.trans('fof-upload.admin.labels.aliyun.endPoint')),
+                        m('input.FormControl', {
+                            value: this.values.aliyunEndPoint() || '',
+                            oninput: withAttr('value', this.values.aliyunEndPoint),
+                        }),
+                        m('label', app.translator.trans('fof-upload.admin.labels.aliyun.bucket')),
+                        m('input.FormControl', {
+                            value: this.values.aliyunBucket() || '',
+                            oninput: withAttr('value', this.values.aliyunBucket),
+                        }),
+                        m('label', app.translator.trans('fof-upload.admin.labels.aliyun.prefix')),
+                        m('input.FormControl', {
+                            value: this.values.aliyunPrefix() || '',
+                            oninput: withAttr('value', this.values.aliyunPrefix),
+                        }),
+                        m('label', app.translator.trans('fof-upload.admin.labels.aliyun.cdn')),
+                        m('input.FormControl', {
+                            value: this.values.aliyunCdn() || '',
+                            oninput: withAttr('value', this.values.aliyunCdn),
                         }),
                     ]),
                 ])

@@ -3,7 +3,7 @@
 ## Todo
 - [x] github storage
 - [x] tencent storage
-- [ ] aliyun storage
+- [x] aliyun storage
 - [ ] upyun storage
 
 ## Installation
@@ -18,6 +18,9 @@ composer require radiergummi/flysystem-github-storage -W
 
 # qcloud
 composer require freyo/flysystem-qcloud-cos-v5 -W
+
+# aliyun
+composer require apollopy/flysystem-aliyun-oss -W
 ```
 
 ```

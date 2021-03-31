@@ -32,6 +32,8 @@ use Radiergummi\FlysystemGitHub\Client as GithubClient;
 use Radiergummi\FlysystemGitHub\GitHubAdapter;
 use Qcloud\Cos\Client as QcloudClient;
 use Freyo\Flysystem\QcloudCOSv5\Adapter as QcloudAdapter;
+use OSS\OssClient as AliyunClient;
+use ApolloPY\Flysystem\AliyunOss\AliyunOssAdapter;
 
 class Manager
 {
@@ -70,6 +72,7 @@ class Manager
             'local' => true,
             'github' => class_exists(GithubClient::class),
             'qcloud' => class_exists(QcloudClient::class),
+            'aliyun' => class_exists(AliyunOssAdapter::class),
         ]);
 
         $this->events->dispatch(new Collecting($adapters));
@@ -200,7 +203,6 @@ class Manager
         return new Adapters\Github(new GitHubAdapter(new GithubClient($token, $repository, $branch)));
     }
 
-
     /**
      * @param Util $util
      *
@@ -238,5 +240,24 @@ class Manager
         ];
 
         return new Adapters\Qcloud(new QcloudAdapter(new QcloudClient($config), $config));
+    }
+
+    /**
+     * @param Util $util
+     *
+     * @return Adapters\Aliyun
+     */
+    protected function aliyun(Util $util)
+    {
+        $accessId = $this->settings->get('fof-upload.aliyunAccessId');
+        $accessKey = $this->settings->get('fof-upload.aliyunAccessKey');
+        $endPoint = $this->settings->get('fof-upload.aliyunEndPoint');
+        $bucket = $this->settings->get('fof-upload.aliyunBucket');
+        $prefix = $this->settings->get('fof-upload.aliyunPrefix');
+        if (!$accessId || !$accessKey || !$endPoint || !$bucket) {
+            return null;
+        }
+
+        return new Adapters\Aliyun(new AliyunOssAdapter(new AliyunClient($accessId, $accessKey, $endPoint), $bucket, $prefix));
     }
 }

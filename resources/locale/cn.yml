@@ -12,8 +12,16 @@ fof-upload:
         region: 区域
         appId: 应用ID
         secretId: SecretId
-        secretKey: SecretKey
+        secretKey: 访问密钥
         bucket: 存储桶
         token: 鉴权（没有则不填）
         timeout: 超时时间
         cdn: '自定义CDN (默认: https://{存储桶地址}.cos.{区域地址}.myqcloud.com)'
+      aliyun:
+        title: 阿里云OSS 储存设置
+        accessId: AccessId
+        accessKey: 访问密钥（不需要https://）
+        endPoint: 访问域名
+        bucket: 存储空间
+        prefix: 前缀
+        cdn: '自定义CDN (默认: https://{存储空间}.{访问域名})'

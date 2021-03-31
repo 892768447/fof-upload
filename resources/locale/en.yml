@@ -72,6 +72,14 @@ fof-upload:
         token: Token
         timeout: Timeout
         cdn: 'cdn url (default: https://{bucket}.cos.{region}.myqcloud.com)'
+      aliyun:
+        title: Aliyun storage settings
+        accessId: AccessId
+        accessKey: AccessKey
+        endPoint: EndPoint
+        bucket: Bucket
+        prefix: Prefix
+        cdn: 'cdn url (default: https://{bucket}.{endPoint})'
       preferences:
         max_file_size: Maximum file size (in kilobytes)
         mime_types: 'Configure your mime type, upload adapter mapping'
@@ -120,6 +128,7 @@ fof-upload:
       qiniu: QiNiu
       github: Github
       qcloud: Qcloud
+      aliyun: Aliyun
   forum:
     media_manager: Media manager
 
